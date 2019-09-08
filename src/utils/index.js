@@ -5,3 +5,7 @@ export const chunkArray = (array, size) => {
   }
   return chunk;
 };
+
+export const getTMDBImageUrl = (img) => {
+  return `https://image.tmdb.org/t/p/w780${img}`;
+};

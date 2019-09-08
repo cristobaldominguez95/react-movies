@@ -1,15 +1,9 @@
 import React from 'react';
-import Router from './routes';
-import Header from './components/Header/Header';
+import Router from './routes'
 
 function App() {
   return (
-    <>
-      <Header />
-      <div className="container">
-        <Router />
-      </div>
-    </>
+    <Router />
   );
 }
 

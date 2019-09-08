@@ -7,7 +7,7 @@ import { chunkArray } from '../../utils';
 class HomePage extends React.Component {
   state = {
     loading: true,
-    movies: []
+    movies: {}
   };
 
   async componentDidMount() {
