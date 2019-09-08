@@ -2,15 +2,23 @@ import React from 'react';
 import Spinner from '../../components/Spinner/Spinner';
 import MovieItem from '../../components/MovieItem/MovieItem';
 import { getMovie } from '../../api/movies-api';
-import { getTMDBImageUrl } from '../../utils';
+import { getTMDBImageUrl, chunkArray } from '../../utils';
 
 class MoviesShowPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: true,
-      movie: {}
+      movie: {},
+      showSimilarMovies: 4
     };
+    this.showMoreSimilarMovies = this.showMoreSimilarMovies.bind(this);
+  }
+
+  showMoreSimilarMovies() {
+    this.setState((state) => ({
+      showSimilarMovies: state.showSimilarMovies + 4
+    }));
   }
 
   async componentDidMount() {
@@ -24,7 +32,8 @@ class MoviesShowPage extends React.Component {
   componentDidUpdate(prevProps) {
     if (this.props.match.params.movieId !== prevProps.match.params.movieId) {
       this.setState({
-        loading: true
+        loading: true,
+        showSimilarMovies: 4
       });
       this.componentDidMount();
     }
@@ -45,14 +54,24 @@ class MoviesShowPage extends React.Component {
                 <p>{this.state.movie.data.overview}</p>
               </div>
             </div>
-            <h1>Similar movies</h1>
-            <div className="columns">
-              {this.state.movie.data.similar.results.slice(0, 4).map((movie) =>
-                <div className="column is-3" key={movie.id}>
-                  <MovieItem movie={movie} />
-                </div>
-              )}
-            </div>
+            <h1 className="title">Similar movies</h1>
+            {chunkArray(this.state.movie.data.similar.results.slice(0, this.state.showSimilarMovies), 4).map((chunk, chunkIndex) =>
+              <div className="columns" key={chunkIndex}>
+                {chunk.map((movie) =>
+                  <div className="column is-3" key={movie.id}>
+                    <MovieItem movie={movie} />
+                  </div>
+                )}
+              </div>
+            )}
+            {this.state.showSimilarMovies < this.state.movie.data.similar.results.length &&
+              <button
+                className="button is-link is-fullwidth"
+                onClick={this.showMoreSimilarMovies}
+              >
+                Show more
+              </button>
+            }
           </>
         )}
       </>
