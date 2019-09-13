@@ -11,3 +11,11 @@ export const getMovie = (movieId, ...append) => {
     }
   });
 };
+
+export const searchMovies = (query) => {
+  return httpClient.get('/search/movie', {
+    params: {
+      query
+    }
+  });
+};

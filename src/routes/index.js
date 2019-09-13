@@ -4,6 +4,7 @@ import Header from '../components/Header/Header';
 import Footer from '../components/Footer/Footer';
 import HomePage from '../pages/HomePage/HomePage';
 import MoviesShowPage from '../pages/MoviesShowPage/MoviesShowPage';
+import SearchPage from '../pages/SearchPage/SearchPage';
 
 function AppRouter() {
   return (
@@ -12,6 +13,7 @@ function AppRouter() {
       <div className="container">
         <Route path="/" exact component={HomePage} />
         <Route path="/movies/:movieId" component={MoviesShowPage} />
+        <Route path="/search" component={SearchPage} />
       </div>
       <Footer />
     </BrowserRouter>
