@@ -1,36 +1,28 @@
 import React from 'react';
 import Spinner from '../../components/Spinner/Spinner';
-import MovieItem from '../../components/MovieItem/MovieItem';
+import MoviesList from '../../components/MoviesList/MoviesList';
 import { getMovie } from '../../api/movies-api';
-import { getTMDBImageUrl, chunkArray } from '../../utils';
+import { getTMDBImageUrl } from '../../utils';
 
 class MoviesShowPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: true,
-      movie: {},
-      showSimilarMovies: 4
+      movie: {}
     };
-    this.showMoreSimilarMovies = this.showMoreSimilarMovies.bind(this);
   }
-
-  showMoreSimilarMovies() {
-    this.setState((state) => ({
-      showSimilarMovies: state.showSimilarMovies + 4
-    }));
-  }
-
-  componentDidMount() {
-    this.getMovie();
-  }
-
+  
   async getMovie() {
     let movie = await getMovie(this.props.match.params.movieId, 'similar');
     this.setState({
       loading: false,
-      movie
+      movie: movie.data
     });
+  }
+
+  componentDidMount() {
+    this.getMovie();
   }
 
   componentDidUpdate(prevProps) {
@@ -52,30 +44,14 @@ class MoviesShowPage extends React.Component {
           <>
             <div className="columns">
               <div className="column is-6">
-                <img src={getTMDBImageUrl(this.state.movie.data.poster_path)} alt={this.state.movie.data.original_title} />
+                <img src={getTMDBImageUrl(this.state.movie.poster_path)} alt={this.state.movie.original_title} />
               </div>
               <div className="column is-6">
-                <p>{this.state.movie.data.overview}</p>
+                <p>{this.state.movie.overview}</p>
               </div>
             </div>
             <h1 className="title">Similar movies</h1>
-            {chunkArray(this.state.movie.data.similar.results.slice(0, this.state.showSimilarMovies), 4).map((chunk, chunkIndex) =>
-              <div className="columns" key={chunkIndex}>
-                {chunk.map((movie) =>
-                  <div className="column is-3" key={movie.id}>
-                    <MovieItem movie={movie} />
-                  </div>
-                )}
-              </div>
-            )}
-            {this.state.showSimilarMovies < this.state.movie.data.similar.results.length &&
-              <button
-                className="button is-link is-fullwidth"
-                onClick={this.showMoreSimilarMovies}
-              >
-                Show more
-              </button>
-            }
+            <MoviesList movies={this.state.movie.similar.results} showAll={false} />
           </>
         )}
       </>

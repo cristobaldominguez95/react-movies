@@ -1,9 +1,8 @@
 import React from 'react';
 import SearchForm from './SearchForm';
 import Spinner from '../../components/Spinner/Spinner';
-import MovieItem from '../../components/MovieItem/MovieItem';
+import MoviesList from '../../components/MoviesList/MoviesList';
 import { searchMovies } from '../../api/movies-api';
-import { chunkArray } from '../../utils';
 
 class SearchPage extends React.Component {
   constructor(props) {
@@ -40,15 +39,7 @@ class SearchPage extends React.Component {
           this.state.movies.length === 0 ? (
             <p>No movies found</p>
           ): (
-            chunkArray(this.state.movies, 4).map((chunk, chunkIndex) =>
-              <div className="columns" key={chunkIndex}>
-                {chunk.map((movie) =>
-                  <div className="column is-3" key={movie.id}>
-                    <MovieItem movie={movie} />
-                  </div>
-                )}
-              </div>
-            )            
+            <MoviesList movies={this.state.movies} />         
           )
         )}
       </>
