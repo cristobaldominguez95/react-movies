@@ -21,7 +21,11 @@ class MoviesShowPage extends React.Component {
     }));
   }
 
-  async componentDidMount() {
+  componentDidMount() {
+    this.getMovie();
+  }
+
+  async getMovie() {
     let movie = await getMovie(this.props.match.params.movieId, 'similar');
     this.setState({
       loading: false,
@@ -35,7 +39,7 @@ class MoviesShowPage extends React.Component {
         loading: true,
         showSimilarMovies: 4
       });
-      this.componentDidMount();
+      this.getMovie();
     }
   }
 

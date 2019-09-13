@@ -7,8 +7,8 @@ const footerStyle = {
 
 function Footer() {
   return (
-    <footer class="footer has-background-dark" style={footerStyle}>
-      <div class="content has-text-white has-text-centered">
+    <footer className="footer has-background-dark" style={footerStyle}>
+      <div className="content has-text-white has-text-centered">
         <p>
           Footer
         </p>
